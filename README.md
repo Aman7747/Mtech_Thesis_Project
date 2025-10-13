@@ -1,5 +1,4 @@
-Here’s a professional and complete **README.md** file for your MTech Thesis repository titled
-**“From Gradients to Reality: Practical White-Box Adversarial Attacks”**, including a dataset link and GitHub reference.
+
 
 ---
 
