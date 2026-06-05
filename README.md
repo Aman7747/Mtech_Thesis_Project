@@ -1,108 +1,159 @@
+# Counterfactual-Oriented Sparse Frequency Attack (CoSFA)
 
+A white-box adversarial attack framework that combines **counterfactual decision modeling**, **Integrated Gradients-based sparse pixel selection**, **high-frequency wavelet perturbations**, and **masked momentum iterative optimization** to generate imperceptible adversarial examples.
 
----
+## Repository Overview
 
-#  From Gradients to Reality: Practical White-Box Adversarial Attacks
+This repository contains the implementation of the CoSFA attack pipeline used in the thesis *From Gradients to Reality: Practical White-Box Adversarial Attacks*.
 
-## Overview
+The project focuses on:
 
-This project investigates **white-box adversarial attacks** — perturbations applied to deep neural network (DNN) inputs to deceive models while remaining nearly invisible to humans. The goal is to make such attacks more **practical**, **efficient**, and **transferable** across architectures.
+* sparse, decision-aware adversarial perturbations
+* frequency-domain optimization
+* perceptual fidelity preservation
+* transferability analysis across multiple image classifiers
 
-The study benchmarks classical and adaptive attacks (FGSM, PGD, C&W, and variants) on the **ImageNet-1000** dataset using **ResNet-18**.
+## Project Structure
 
----
+```text
+.
+├── Cosfa_attack.py
+├── Optimization_and_transferability.py
+└── README.md
+```
 
-## Objectives
+## Core Ideas
 
-1. Analyze vulnerabilities in deep neural networks using white-box adversarial attacks.
-2. Implement and evaluate key gradient-based attacks: **FGSM**, **PGD**, and **C&W**.
-3. Develop and test **PGD variants** (Normal, Momentum, Adaptive).
-4. Evaluate attack effectiveness using metrics:
+CoSFA is built around four main stages:
 
-   * **Attack Success Rate (ASR)**
-   * **Runtime Efficiency**
-   * **Perceptual Quality (FID)**
-5. Propose methods to improve practicality, transferability, and runtime performance.
+1. **Counterfactual class selection** — identify the nearest competing class in logit space.
+2. **Pixel attribution** — compute Integrated Gradients and keep only the top-
+   *k* most important pixels.
+3. **Wavelet-domain perturbation** — restrict adversarial energy to high-frequency
+   subbands to preserve low-frequency structure.
+4. **Masked MI-PGD optimization** — optimize the perturbation under an (\ell_\infty)
+   budget while respecting the sparse mask.
 
----
+## Architecture
 
-##  Attack Methods Implemented
+The architecture illustrated in the thesis can be summarized as the following pipeline:
 
-| **Method** | **Description**                         | **Key Advantage**                  |
-| ---------- | --------------------------------------- | ---------------------------------- |
-| FGSM       | Single-step gradient-based perturbation | Fast but less stealthy             |
-| PGD / BIM  | Iterative optimization attack           | High ASR, moderate runtime         |
-| C&W        | Optimization-based L₂ attack            | Low distortion, strong attack      |
-| MI-FGSM    | Momentum variant of PGD                 | Improved transferability           |
-| APGD       | Adaptive step-size PGD                  | Faster and more stable convergence |
+```mermaid
+flowchart LR
+    A[Clean image] --> B[Classifier]
+    B --> C[Counterfactual class selection]
+    C --> D[Integrated Gradients]
+    D --> E[Top-k sparse pixel mask]
+    E --> F[Wavelet transform]
+    F --> G[High-frequency perturbation]
+    G --> H[Masked MI-PGD]
+    H --> I[Adversarial image]
+```
 
----
+### Visual Overview
 
-##  Experimental Setup
+The thesis figure on the methodology page shows the complete CoSFA pipeline, including:
 
-* **Dataset:** [ImageNet-1000 (ILSVRC 2012)](https://www.image-net.org/)
-* **Victim Model:** ResNet-18 (Pretrained on ImageNet)
-* **Perturbation Bound:** ϵ = 8/255
-* **Attack Type:** Non-targeted
-* **Framework:** PyTorch
-* **Hardware:** NVIDIA RTX 3080 GPU
+* counterfactual class selection
+* gradient accumulation for attribution
+* top-*k* perturbation selection
+* wavelet transformation
+* perturbation projection and adaptive search
 
----
+The results figure in the thesis shows that clean images are converted into adversarial examples that preserve visual appearance while changing the predicted class.
 
-##  Results Summary
+## Code Modules
 
-| **Attack**              | **Iterations** | **Runtime (s)** | **ASR (%)** | **FID (↓)** |
-| ----------------------- | -------------- | --------------- | ----------- | ----------- |
-| FGSM                    | 1              | 0.01            | 98.72       | 105.64      |
-| BIM                     | 30             | 1.44            | 99.98       | 50.12       |
-| C&W                     | 10             | 5.12            | 98.50       | 40.10       |
-| Normal PGD              | 10             | 14.14           | 100.00      | 31.70       |
-| Momentum PGD            | 10             | 14.38           | 100.00      | 40.40       |
-| **Adaptive PGD (APGD)** | 10             | **4.79**        | **100.00**  | **0.06**    |
+### `Cosfa_attack.py`
 
- **APGD** achieves the best trade-off between efficiency, imperceptibility, and attack strength.
+Implements the main CoSFA attack pipeline, including:
 
----
+* dataset loading
+* wavelet transform utilities
+* Integrated Gradients mask generation
+* masked momentum iterative PGD attack
+* model loading for ResNet-50, ConvNeXt-Base, ViT-B/16, and VisionMamba-Small
+* metric computation and visualization helpers
 
-##  Future Work
+### `Optimization_and_transferability.py`
 
-**HA-INN (High-Frequency Adversarial Invertible Neural Network):**
-Future extensions will explore invertible neural networks for frequency-aware attacks to improve imperceptibility and transferability.
+Contains the evaluation and transferability analysis pipeline, including:
 
-* Adversarial optimization in **latent frequency space**
-* Integration with **adaptive PGD**
-* Evaluation using perceptual metrics (**FID**, **LPIPS**, **SSIM**)
-* Testing against **adversarially trained defenses**
+* ImageNet-Mini dataset loading
+* SSIM / PSNR / LPIPS / MUSIQ / FID-style quality metrics
+* optimization-step analysis
+* cross-architecture transferability experiments
+* adversarial result logging and visualization
 
+## Dataset
 
+The experiments use **ImageNet-Mini**.
 
----
+### Dataset link
 
+Use the dataset link provided in the thesis or project documentation here:
 
-##  Dataset Access
+**Dataset:** `PASTE_DATASET_LINK_HERE`
 
-* **ImageNet-1000** (ILSVRC 2012):
-  🔗 [https://www.image-net.org/](https://www.image-net.org/)
-  *You may also access a subset via Kaggle:*
-  🔗 [https://www.kaggle.com/c/imagenet-object-localization-challenge/data](https://www.kaggle.com/c/imagenet-object-localization-challenge/data)
+### Dataset layout
 
----
+```text
+imagenet-mini/
+└── val/
+    ├── class_1/
+    ├── class_2/
+    └── ...
+```
 
-##  References
+The loaders in the code also support a Kaggle fallback path when the local dataset directory is unavailable.
 
-1. I. Goodfellow et al., *Explaining and Harnessing Adversarial Examples*, ICLR 2015
-2. A. Madry et al., *Towards Deep Learning Models Resistant to Adversarial Attacks*, ICLR 2018
-3. N. Carlini & D. Wagner, *Towards Evaluating the Robustness of Neural Networks*, IEEE S&P 2017
-4. F. Croce & M. Hein, *Reliable Evaluation of Adversarial Robustness*, ICML 2020
-5. Y. Dong et al., *Boosting Adversarial Attacks with Momentum*, CVPR 2018
+## Models Evaluated
 
----
+* ResNet-50
+* ConvNeXt-Base
+* ViT-B/16
+* VisionMamba-Small
 
-##  Project Link
+## Metrics
 
-GitHub Repository:
-👉 [https://github.com/Aman7747/Mtech_Thesis_Project](https://github.com/Aman7747/Mtech_Thesis_Project)
+The repository evaluates adversarial quality using:
 
----
+* Attack Success Rate (ASR)
+* (\ell_\infty) perturbation budget
+* (\ell_2) distance
+* PSNR
+* SSIM
+* LPIPS
+* FID
+* MUSIQ
 
+## Installation
+
+```bash
+pip install torch torchvision timm pywt lpips pyiqa scipy scikit-image pandas matplotlib tqdm pillow
+```
+
+## Usage
+
+### Run the CoSFA attack
+
+```bash
+python Cosfa_attack.py
+```
+
+### Run optimization and transferability analysis
+
+```bash
+python Optimization_and_transferability.py
+```
+
+## Output Examples
+
+* clean vs adversarial image comparisons
+
+**From Gradients to Reality: Practical White-Box Adversarial Attacks**
+
+## GitHub Repository
+
+`https://github.com/Aman7747/Mtech_Thesis_Project`
 
