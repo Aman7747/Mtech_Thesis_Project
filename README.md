@@ -36,19 +36,12 @@ CoSFA is built around four main stages:
 
 ## Architecture
 
-The architecture illustrated in the thesis can be summarized as the following pipeline:
+The architecture illustrated in the thesis:
 
-```mermaid
-flowchart LR
-    A[Clean image] --> B[Classifier]
-    B --> C[Counterfactual class selection]
-    C --> D[Integrated Gradients]
-    D --> E[Top-k sparse pixel mask]
-    E --> F[Wavelet transform]
-    F --> G[High-frequency perturbation]
-    G --> H[Masked MI-PGD]
-    H --> I[Adversarial image]
-```
+
+    [Wavel<img width="1049" height="644" alt="Screenshot 2026-06-05 174231" src="https://github.com/user-attachments/assets/b16433ef-a17f-4445-ab71-6c89bd1bed61" />
+
+  
 
 ### Visual Overview
 
