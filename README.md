@@ -110,14 +110,14 @@ The loaders in the code also support a Kaggle fallback path when the local datas
 
 The repository evaluates adversarial quality using:
 
-* Attack Success Rate (ASR)
-* (\ell_\infty) perturbation budget
-* (\ell_2) distance
-* PSNR
-* SSIM
-* LPIPS
-* FID
-* MUSIQ
+- Attack Success Rate (ASR)
+- $L_\infty$ perturbation budget
+- $L_2$ distance
+- PSNR
+- SSIM
+- LPIPS
+- FID
+- MUSIQ
 
 ## Installation
 
