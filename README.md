@@ -36,12 +36,11 @@ CoSFA is built around four main stages:
 
 ## Architecture
 
-The architecture illustrated in the thesis:
+<p align="center">
+  <img src="figures/cosfa_architecture.png" width="1000">
+</p>
 
-
-    [Wavel<img width="1049" height="644" alt="Screenshot 2026-06-05 174231" src="https://github.com/user-attachments/assets/b16433ef-a17f-4445-ab71-6c89bd1bed61" />
-
-  
+**Figure 1.** Overview of the proposed Counterfactual-Oriented Sparse Frequency Attack (CoSFA). The framework first identifies the nearest counterfactual class, computes Integrated Gradients to obtain decision-critical pixels, selects the Top-k sparse perturbation support, constrains perturbations to high-frequency wavelet subbands, and optimizes them using masked momentum iterative projected gradient descent under perceptual fidelity constraints.
 
 ### Visual Overview
 
@@ -86,7 +85,7 @@ The experiments use **ImageNet-Mini**.
 
 Use the dataset link provided in the thesis or project documentation here:
 
-**Dataset:** `PASTE_DATASET_LINK_HERE`
+**Dataset:** `https://github.com/cleverhans-lab/cleverhans/tree/master/cleverhans_v3.1.0/examples/nips17_adversarial_competition/dataset`
 
 ### Dataset layout
 
