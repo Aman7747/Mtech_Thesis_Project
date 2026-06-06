@@ -17,6 +17,7 @@ The project focuses on:
 
 ```text
 .
+├──figures
 ├── Cosfa_attack.py
 ├── Optimization_and_transferability.py
 └── README.md
@@ -31,7 +32,7 @@ CoSFA is built around four main stages:
    *k* most important pixels.
 3. **Wavelet-domain perturbation** — restrict adversarial energy to high-frequency
    subbands to preserve low-frequency structure.
-4. **Masked MI-PGD optimization** — optimize the perturbation under an (\ell_\infty)
+4. **Masked MI-PGD optimization** — optimize the perturbation under an $L_\infty$
    budget while respecting the sparse mask.
 
 ## Architecture
@@ -44,15 +45,13 @@ CoSFA is built around four main stages:
 
 ### Visual Overview
 
-The thesis figure on the methodology page shows the complete CoSFA pipeline, including:
+The above figure shows the complete CoSFA pipeline, including:
 
 * counterfactual class selection
 * gradient accumulation for attribution
 * top-*k* perturbation selection
 * wavelet transformation
 * perturbation projection and adaptive search
-
-The results figure in the thesis shows that clean images are converted into adversarial examples that preserve visual appearance while changing the predicted class.
 
 ## Code Modules
 
@@ -142,8 +141,9 @@ python Optimization_and_transferability.py
 ## Output Examples
 
 * clean vs adversarial image comparisons
-
-**From Gradients to Reality: Practical White-Box Adversarial Attacks**
+<p align="center">
+  <img src="figures/output.png" width="1000">
+</p>
 
 ## GitHub Repository
 
