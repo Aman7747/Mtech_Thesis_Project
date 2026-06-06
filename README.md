@@ -142,7 +142,7 @@ python Optimization_and_transferability.py
 
 * clean vs adversarial image comparisons
 <p align="center">
-  <img src="figures/output.png" width="1000">
+  <img src="figures/output_image.png" width="1000">
 </p>
 
 ## GitHub Repository
